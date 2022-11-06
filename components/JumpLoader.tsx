@@ -31,7 +31,13 @@ const JumpLoader = () => {
 	}
 	return (
 		<div className="container" onAnimationIteration={updateColor}>
-			<h4 className="text">Fetching videos...</h4>
+			<h4
+				className="text"
+				style={{ color: strokeColor }}
+				onAnimationIteration={updateStrokeColor}
+			>
+				Fetching videos...
+			</h4>
 			<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
 				<path
 					className="jumper"
