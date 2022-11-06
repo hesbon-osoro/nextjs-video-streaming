@@ -1,0 +1,92 @@
+/* This file is in order to debug impure selectors in CSS modules thrown by NextJs */
+:root {
+	--len: 136.71884155273438px;
+	--time: 1.3s;
+	--color: rgb(56, 56, 69);
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 90vh;
+}
+
+svg {
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 40rem;
+	height: 40rem;
+	margin-left: -20rem;
+	margin-top: -20rem;
+	overflow: visible;
+}
+
+.jumper {
+	fill: none;
+	stroke: var(--color);
+	stroke-width: 10px;
+	stroke-dashoffset: 0;
+	stroke-dasharray: 0, var(--len);
+	animation: jump var(--time) linear infinite;
+}
+
+.jumper.clone {
+	opacity: 0.05;
+	transform: translateY(200px) scaleY(-1);
+}
+
+.circleL {
+	opacity: 0;
+	transform-origin: 47.2px 95.6px;
+	animation: animCircle var(--time) infinite;
+}
+
+.circleR {
+	opacity: 0;
+	transform-origin: 136.2px 95.6px;
+	animation: animCircle var(--time) calc(var(--time) * 0.56) infinite;
+}
+
+@keyframes jump {
+	8% {
+		stroke-dasharray: calc(var(--len) * 0.15), var(--len);
+	}
+	32% {
+		stroke-dasharray: calc(var(--len) * 0.3), var(--len);
+		stroke-dashoffset: calc(var(--len) * -0.35);
+	}
+	56% {
+		stroke-dasharray: calc(var(--len) * 0.15), var(--len);
+		stroke-dashoffset: calc(var(--len) * -0.85);
+	}
+	64% {
+		stroke-dasharray: 0, var(--len);
+		stroke-dashoffset: calc(-1 * var(--len));
+	}
+}
+
+@keyframes animCircle {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		transform: scale(3);
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.check-out {
+	position: absolute;
+	bottom: 0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 2rem;
+	color: #fff;
+}
