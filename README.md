@@ -2,7 +2,13 @@
 
 [![Video](assets/video-stream.png)](https://nextjs-video-streaming.vercel.app/)
 
+[![Tom](assets/video-stream2.png)](https://nextjs-video-streaming.vercel.app/)
+
+[![Restaurant](assets/video-stream1.png)](https://nextjs-video-streaming.vercel.app/)
+
 A video streaming app using Node js with Nest js framework for backend and NextJs for Frontend.
+
+Start the NestJs [`Server`](https://github.com/hesbon-osoro/nestjs-video-streaming) the open the frontend.
 
 ## Setup
 
