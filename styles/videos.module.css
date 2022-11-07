@@ -4,8 +4,11 @@
 	justify-content: space-between;
 	align-items: center;
 	margin: 2rem;
+	padding: 2rem;
 }
+
 .buttons button {
+	cursor: pointer;
 	padding: 1rem;
 	border: 1px solid #000;
 	border-radius: 5px;
@@ -17,4 +20,17 @@
 
 .videoDetails {
 	border: 2px black solid;
+}
+
+.playerContainer {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.playerContainer video {
+	height: 100%;
+	width: 100%;
+	object-fit: initial;
 }
