@@ -19,12 +19,12 @@ const VideoControls: FC<VideoControlsProps> = ({
 }) => {
 	return (
 		<div className={styles.buttons}>
-			<button onClick={onNext}>
+			<button onClick={onPrev}>
 				<span>&larr;</span>
 				{prevTitle}
 			</button>
 			{currentVideo.title}
-			<button onClick={onPrev}>
+			<button onClick={onNext}>
 				{nextTitle}
 				<span>&rarr;</span>
 			</button>
