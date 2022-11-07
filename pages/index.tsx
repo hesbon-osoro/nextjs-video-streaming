@@ -2,90 +2,49 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import {
-	JumpLoader,
-	VideoControls,
-	VideoDetails,
-	VideoPlayer,
-} from '../components';
+import { JumpLoader, VideoControls, VideoPlayer } from '../components';
 import { VideoProp, videosData } from '../data';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-	const SERVER_HOST = `http://localhost:5000/video/stream`;
-	// const [videos, setVideos] = useState<VideoProp[]>([]);
+	const ENVIRONMENT_MODE = process.env.NODE_ENV;
+	const SERVER_HOST =
+		ENVIRONMENT_MODE === 'development'
+			? `http://localhost:5000/video/stream`
+			: 'https://nestjs-video-streaming-production.up.railway.app/video/stream';
+	console.log(ENVIRONMENT_MODE);
+	const videos: VideoProp[] = videosData;
 	const [isLoading, setIsLoading] = useState(true);
+	const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
-	const videos: VideoProp[] = [
-		{
-			id: 0,
-			name: 'big-buck-bunny',
-			duration: '<1 min',
-			title: 'Big Buck Bunny',
-		},
-		{
-			id: 1,
-			name: 'tom-and-jerry',
-			duration: '3 mins',
-			title: 'Tom & Jerry',
-		},
-		{
-			id: 2,
-			name: 'soul',
-			duration: '4 mins',
-			title: 'Soul',
-		},
-		{
-			id: 3,
-			name: 'outside-the-wire',
-			duration: '2 mins',
-			title: 'Outside the wire',
-		},
-		{
-			id: 4,
-			name: 'hampi-restaurant',
-			duration: '3 mins',
-			title: 'Hampi Restaurant demo',
-		},
-		{
-			id: 5,
-			name: 'detect-and-blur-human-faces',
-			duration: '1 min',
-			title: 'Detect and blur human faces',
-		},
-		{
-			id: 6,
-			name: 'bitcoin-meme',
-			duration: '<1 min',
-			title: 'Bitcoin meme',
-		},
-	];
+	console.log('videosData: ', videosData);
 
 	useEffect(() => {
-		console.log('Initial videos: ', videos);
-		// setVideos(videosData);
 		setTimeout(() => {
-			setIsLoading(true);
-		}, 1000);
-		console.log('Fetched videos: ', videos);
+			if (videos.length) setIsLoading(false);
+		}, 5000);
 	}, []);
 
-	const [currentVideo, setCurrentVideo] = useState(
-		videos[/*Math.floor(Math.random() * videos.length)*/ 0]
-	);
-	// const [activeVideoIndex, setActiveVideoIndex] = useState('');
+	const [currentVideo, setCurrentVideo] = useState(videos[0]);
 
 	const handleNextVideo = () => {
 		let { length } = videos;
-		let index = currentVideo.id + 1;
+		let index = activeVideoIndex + 1;
 		index = index % length;
+		setActiveVideoIndex(index);
 		setCurrentVideo(videos[index]);
 	};
 
 	const handlePrevVideo = () => {
 		let { length } = videos;
-		let index = currentVideo.id - 1;
-		index = index % length;
+		let index = activeVideoIndex;
+
+		if (index === 0) {
+			index = length - 1;
+		} else {
+			index = index - 1;
+		}
+		setActiveVideoIndex(index);
 		setCurrentVideo(videos[index]);
 	};
 
@@ -96,8 +55,12 @@ export default function Home() {
 	};
 
 	const prevVideoTitle = (index, arr) => {
-		let prevIndex = index - 1;
-		prevIndex = prevIndex % arr.length;
+		let prevIndex = 0;
+		if (index === 0) {
+			prevIndex = arr.length - 1;
+		} else {
+			prevIndex = index - 1;
+		}
 		return arr[prevIndex].title;
 	};
 
@@ -116,22 +79,19 @@ export default function Home() {
 			{isLoading ? (
 				<JumpLoader />
 			) : (
-				<main className={styles.main}>
+				<>
 					<h1>Video Streaming App in NextJs and NestJs</h1>
-					<VideoPlayer videoId={currentVideo.id} serverUrl={SERVER_HOST} />
-					<VideoDetails
-						title={currentVideo.title}
-						description={currentVideo.name}
-						duration={currentVideo.duration}
-					/>
-					<VideoControls
-						currentVideo={currentVideo}
-						onNext={handleNextVideo}
-						onPrev={handlePrevVideo}
-						nextTitle={nextVideoTitle(currentVideo.id, videos)}
-						prevTitle={prevVideoTitle(currentVideo.id, videos)}
-					/>
-				</main>
+					<main className={styles.main}>
+						<VideoPlayer videoId={activeVideoIndex} serverUrl={SERVER_HOST} />
+						<VideoControls
+							currentVideo={currentVideo}
+							onNext={handleNextVideo}
+							onPrev={handlePrevVideo}
+							nextTitle={nextVideoTitle(activeVideoIndex, videos)}
+							prevTitle={prevVideoTitle(activeVideoIndex, videos)}
+						/>
+					</main>
+				</>
 			)}
 
 			<footer className={styles.footer}>
